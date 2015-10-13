@@ -48,23 +48,28 @@ print Teq10AU
 Teq130AU = np.array([dM.Teq(Pin130AU[i],rg[i]) for i in range(4)])
 print Teq130AU
 
-#Fnu10AUp1 = 
-#Fnu10AU1 = 
-#Fnu10AU10 = 
-#Fnu10AU1mm = 
+D=7.7*3.0857e18
 
-#plt.plot(np.log10(nu),np.log10(Fnu10AUp1(nu)),label=r"$a=0.1\mu\mathrm{m}")
-#plt.plot(np.log10(nu),np.log10(Fnu10AU1(nu)),label=r"$a=1\mu\mathrm{m}")
-#plt.plot(np.log10(nu),np.log10(Fnu10AU10(nu)),label=r"$a=10\mu\mathrm{m}")
-#plt.plot(np.log10(nu),np.log10(Fnu10AU1mm(nu)),label=r"$a=1\mathrm{mm}")
+Fnu10AUp1 = dM.calcFQ(Teq10AU[0],rg[0],D)
+Fnu10AU1 = dM.calcFQ(Teq10AU[1],rg[1],D)
+Fnu10AU10 = dM.calcFQ(Teq10AU[2],rg[2],D)
+Fnu10AU1mm = dM.calcFQ(Teq10AU[3],rg[3],D)
+
+plt.plot(np.log10(nu),np.log10(Fnu10AUp1(nu)),label=r"$a=0.1\mu\mathrm{m}")
+plt.plot(np.log10(nu),np.log10(Fnu10AU1(nu)),label=r"$a=1\mu\mathrm{m}")
+plt.plot(np.log10(nu),np.log10(Fnu10AU10(nu)),label=r"$a=10\mu\mathrm{m}")
+plt.plot(np.log10(nu),np.log10(Fnu10AU1mm(nu)),label=r"$a=1\mathrm{mm}")
+plt.savefig('Fnu10Au.pdf')
+plt.clf()
 
 
-#Fnu130AUp1 = 
-#Fnu130AU1 = 
-#Fnu130AU10 = 
-#Fnu130AU1mm = 
+Fnu130AUp1 = dM.calcFQ(Teq130AU[0],rg[0],D)
+Fnu130AU1 = dM.calcFQ(Teq130AU[1],rg[1],D)
+Fnu130AU10 = dM.calcFQ(Teq130AU[2],rg[2],D)
+Fnu130AU1mm = dM.calcFQ(Teq130AU[3],rg[3],D)
 
-#plt.plot(np.log10(nu),np.log10(Fnu130AUp1(nu)),label=r"$a=0.1\mu\mathrm{m}")
-#plt.plot(np.log10(nu),np.log10(Fnu130AU1(nu)),label=r"$a=1\mu\mathrm{m}")
-#plt.plot(np.log10(nu),np.log10(Fnu130AU10(nu)),label=r"$a=10\mu\mathrm{m}")
-#plt.plot(np.log10(nu),np.log10(Fnu130AU1mm(nu)),label=r"$a=1\mathrm{mm}")
+plt.plot(np.log10(nu),np.log10(Fnu130AUp1(nu)),label=r"$a=0.1\mu\mathrm{m}")
+plt.plot(np.log10(nu),np.log10(Fnu130AU1(nu)),label=r"$a=1\mu\mathrm{m}")
+plt.plot(np.log10(nu),np.log10(Fnu130AU10(nu)),label=r"$a=10\mu\mathrm{m}")
+plt.plot(np.log10(nu),np.log10(Fnu130AU1mm(nu)),label=r"$a=1\mathrm{mm}")
+plt.savefig('Fnu130Au.pdf')

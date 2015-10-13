@@ -44,25 +44,27 @@ print "Pin for 1 mm grain at 130 AU: ", Pin130AU[3]
 
 ####### 3 ########
 Teq10AU = np.array([dM.Teq(Pin10AU[i],rg[i]) for i in range(4)])
+print Teq10AU
 Teq130AU = np.array([dM.Teq(Pin130AU[i],rg[i]) for i in range(4)])
+print Teq130AU
 
-Fnu10AUp1 = 
-Fnu10AU1 = 
-Fnu10AU10 = 
-Fnu10AU1mm = 
+#Fnu10AUp1 = 
+#Fnu10AU1 = 
+#Fnu10AU10 = 
+#Fnu10AU1mm = 
 
-plt.plot(np.log10(nu),np.log10(Fnu10AUp1(nu)),label=r"$a=0.1\mu\mathrm{m}")
-plt.plot(np.log10(nu),np.log10(Fnu10AU1(nu)),label=r"$a=1\mu\mathrm{m}")
-plt.plot(np.log10(nu),np.log10(Fnu10AU10(nu)),label=r"$a=10\mu\mathrm{m}")
-plt.plot(np.log10(nu),np.log10(Fnu10AU1mm(nu)),label=r"$a=1\mathrm{mm}")
+#plt.plot(np.log10(nu),np.log10(Fnu10AUp1(nu)),label=r"$a=0.1\mu\mathrm{m}")
+#plt.plot(np.log10(nu),np.log10(Fnu10AU1(nu)),label=r"$a=1\mu\mathrm{m}")
+#plt.plot(np.log10(nu),np.log10(Fnu10AU10(nu)),label=r"$a=10\mu\mathrm{m}")
+#plt.plot(np.log10(nu),np.log10(Fnu10AU1mm(nu)),label=r"$a=1\mathrm{mm}")
 
 
-Fnu130AUp1 = 
-Fnu130AU1 = 
-Fnu130AU10 = 
-Fnu130AU1mm = 
+#Fnu130AUp1 = 
+#Fnu130AU1 = 
+#Fnu130AU10 = 
+#Fnu130AU1mm = 
 
-plt.plot(np.log10(nu),np.log10(Fnu130AUp1(nu)),label=r"$a=0.1\mu\mathrm{m}")
-plt.plot(np.log10(nu),np.log10(Fnu130AU1(nu)),label=r"$a=1\mu\mathrm{m}")
-plt.plot(np.log10(nu),np.log10(Fnu130AU10(nu)),label=r"$a=10\mu\mathrm{m}")
-plt.plot(np.log10(nu),np.log10(Fnu130AU1mm(nu)),label=r"$a=1\mathrm{mm}")
+#plt.plot(np.log10(nu),np.log10(Fnu130AUp1(nu)),label=r"$a=0.1\mu\mathrm{m}")
+#plt.plot(np.log10(nu),np.log10(Fnu130AU1(nu)),label=r"$a=1\mu\mathrm{m}")
+#plt.plot(np.log10(nu),np.log10(Fnu130AU10(nu)),label=r"$a=10\mu\mathrm{m}")
+#plt.plot(np.log10(nu),np.log10(Fnu130AU1mm(nu)),label=r"$a=1\mathrm{mm}")

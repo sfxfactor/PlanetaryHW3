@@ -25,14 +25,44 @@ nu=c/l
 plt.plot(np.log10(nu),np.log10(Fnu130AU(nu)),label="130 AU")
 plt.legend(loc=2)
 plt.savefig("FomFnu.pdf")
+plt.clf()
 
 ######## 2 ########
-print "Pin for 0.1 um grain at 10 AU: ", dM.Pin(Fnu10AU,0.1)
-print "Pin for 1 um grain at 10 AU: ", dM.Pin(Fnu10AU,1.)
-print "Pin for 10 um grain at 10 AU: ", dM.Pin(Fnu10AU,10.)
-print "Pin for 1 mm grain at 10 AU: ", dM.Pin(Fnu10AU,1000.)
+rg = np.array([0.1,1.,10.,1000.])
+Pin10AU = np.array([dM.Pin(Fnu10AU,i) for i in rg])
+Pin130AU = np.array([dM.Pin(Fnu130AU,i) for i in rg])
 
-print "Pin for 0.1 um grain at 130 AU: ", dM.Pin(Fnu130AU,0.1)
-print "Pin for 1 um grain at 130 AU: ", dM.Pin(Fnu130AU,1.)
-print "Pin for 10 um grain at 130 AU: ", dM.Pin(Fnu130AU,10.)
-print "Pin for 1 mm grain at 130 AU: ", dM.Pin(Fnu130AU,1000.)
+print "Pin for 0.1 um grain at 10 AU: ", Pin10AU[0]
+print "Pin for 1 um grain at 10 AU: ", Pin10AU[1]
+print "Pin for 10 um grain at 10 AU: ", Pin10AU[2]
+print "Pin for 1 mm grain at 10 AU: ", Pin10AU[3]
+
+print "Pin for 0.1 um grain at 130 AU: ", Pin130AU[0]
+print "Pin for 1 um grain at 130 AU: ", Pin130AU[1]
+print "Pin for 10 um grain at 130 AU: ", Pin130AU[2]
+print "Pin for 1 mm grain at 130 AU: ", Pin130AU[3]
+
+####### 3 ########
+Teq10AU = np.array([dM.Teq(Pin10AU[i],rg[i]) for i in range(4)])
+Teq130AU = np.array([dM.Teq(Pin130AU[i],rg[i]) for i in range(4)])
+
+Fnu10AUp1 = 
+Fnu10AU1 = 
+Fnu10AU10 = 
+Fnu10AU1mm = 
+
+plt.plot(np.log10(nu),np.log10(Fnu10AUp1(nu)),label=r"$a=0.1\mu\mathrm{m}")
+plt.plot(np.log10(nu),np.log10(Fnu10AU1(nu)),label=r"$a=1\mu\mathrm{m}")
+plt.plot(np.log10(nu),np.log10(Fnu10AU10(nu)),label=r"$a=10\mu\mathrm{m}")
+plt.plot(np.log10(nu),np.log10(Fnu10AU1mm(nu)),label=r"$a=1\mathrm{mm}")
+
+
+Fnu130AUp1 = 
+Fnu130AU1 = 
+Fnu130AU10 = 
+Fnu130AU1mm = 
+
+plt.plot(np.log10(nu),np.log10(Fnu130AUp1(nu)),label=r"$a=0.1\mu\mathrm{m}")
+plt.plot(np.log10(nu),np.log10(Fnu130AU1(nu)),label=r"$a=1\mu\mathrm{m}")
+plt.plot(np.log10(nu),np.log10(Fnu130AU10(nu)),label=r"$a=10\mu\mathrm{m}")
+plt.plot(np.log10(nu),np.log10(Fnu130AU1mm(nu)),label=r"$a=1\mathrm{mm}")

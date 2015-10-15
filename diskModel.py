@@ -20,6 +20,9 @@ def calcF(T,Rs,Dp):
         return Bnu(nu,T)*Omg/Jy
     return Fnu
 
+#test for sun, should be ~1.24e6 Jy
+#print calcF(5800,7e10,1.49598e13)(10e9)
+
 def getQdat(rg):
     if rg == 0.1:
         Qdat=ascii.read("suvSil_21",header_start=2436,data_start=2437,data_end=2677)
@@ -37,7 +40,7 @@ def getQdat(rg):
 def Pin(Fnu,rg):
     Qdat=getQdat(rg)
 
-    Pin = (np.pi*(rg*1e-4)**2)*np.trapz(Qdat['Q_abs']*Fnu(c/(Qdat['w(micron)']*1e-6))*Jy,x=c/(Qdat['w(micron)']*1e-6))
+    Pin = (np.pi*(rg*1e-4)**2)*np.trapz(Qdat['Q_abs']*Fnu(c/(Qdat['w(micron)']*1e-4))*Jy,x=c/(Qdat['w(micron)']*1e-4))
 
     return Pin
 
@@ -45,7 +48,7 @@ def Teq(Pin,rg):
     Qdat = getQdat(rg)
     #Pin = Pout = (4.*np.pi*rg**2)*Q*sigma*T**4
     def f(T):
-        return (4.*np.pi*rg**2)*np.trapz(Qdat['Q_abs']*Bnu(c/(Qdat['w(micron)']*1e-6),T)*np.pi,x=c/(Qdat['w(micron)']*1e-6))-Pin
+        return (4.*np.pi*rg**2)*np.trapz(Qdat['Q_abs']*Bnu(c/(Qdat['w(micron)']*1e-4),T)*np.pi,x=c/(Qdat['w(micron)']*1e-4))-Pin
 
     Teq = opt.root(f,300.).x[0]
     
@@ -53,7 +56,17 @@ def Teq(Pin,rg):
 
 def calcFQ(T,R,D):
     Qdat=getQdat(R)
-    Qabsnu = intp.UnivariateSpline(c/(Qdat['w(micron)']*1e-6),Qdat['Q_abs'])
+    #spline does not do a good job of interpolation- use power law for low frequencies
+    def Qabsnu(nu):
+        Qabs = intp.interp1d(c/(Qdat['w(micron)']*1e-4),Qdat['Q_abs'],bounds_error=0,fill_value=-1.)
+        Qabsnu = Qabs(nu)
+        # check to make sure only use power law for small nu
+        for i in np.where((Qabsnu==-1) & (nu<(c/0.01)))[0]:
+            Qabsnu[i] = Qabs(c/1e-1) * ((nu[i]*1e-1)/c)**2
+        if np.size(np.where(Qabsnu==-1)[0]>0):
+            print "no Q data available for wavelengths shorter than 1 nm"
+
+        return Qabsnu
 
     def Fnu(nu):
         Omg = np.pi*(R/D)**2

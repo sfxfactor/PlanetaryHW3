@@ -29,13 +29,25 @@ def getQdat(rg):
     elif rg == 1.:
         Qdat=ascii.read("suvSil_21",header_start=3651,data_start=3656,data_end=3892)
     elif rg == 10.:
-        Qdat=ascii.read("suvSil_21",header_start=4866,data_start=4867,data_end=5107)
+        Qdat=ascii.read("suvSil_21",header_start=4866,data_start=4867,data_end=5108)
     elif rg == 1000.:
-        Qdat=ascii.read("suvSil_21",header_start=4866,data_start=4867,data_end=5107)
+        Qdat=ascii.read("suvSil_21",header_start=4866,data_start=4867,data_end=5108)
         Qdat['Q_abs']=1.
     else:
         raise Error("Grain radius must be 0.1, 1, 10, or 1000 um")
     return Qdat
+
+def exQabsnu(Qdat):
+    def Qabsnu(nu):
+        exQabs = intp.interp1d(c/(Qdat['w(micron)']*1e-4),Qdat['Q_abs'],bounds_error=0,fill_value=-1.)
+        exQabsnu = exQabs(nu)
+        # check to make sure only use power law for small nu
+        for i in np.where((exQabsnu==-1) & (nu<(c/0.01)))[0]:
+            exQabsnu[i] = exQabs(c/1e-1) * ((nu[i]*1e-1)/c)**2
+        if np.size(np.where(exQabsnu==-1)[0]>0):
+            print "no Q data available for wavelengths shorter than 1 nm"
+        return exQabsnu
+    return Qabsnu
 
 def Pin(Fnu,rg):
     Qdat=getQdat(rg)
@@ -57,16 +69,6 @@ def Teq(Pin,rg):
 def calcFQ(T,R,D):
     Qdat=getQdat(R)
     #spline does not do a good job of interpolation- use power law for low frequencies
-    def Qabsnu(nu):
-        Qabs = intp.interp1d(c/(Qdat['w(micron)']*1e-4),Qdat['Q_abs'],bounds_error=0,fill_value=-1.)
-        Qabsnu = Qabs(nu)
-        # check to make sure only use power law for small nu
-        for i in np.where((Qabsnu==-1) & (nu<(c/0.01)))[0]:
-            Qabsnu[i] = Qabs(c/1e-1) * ((nu[i]*1e-1)/c)**2
-        if np.size(np.where(Qabsnu==-1)[0]>0):
-            print "no Q data available for wavelengths shorter than 1 nm"
-
-        return Qabsnu
 
     def Fnu(nu):
         Omg = np.pi*(R/D)**2

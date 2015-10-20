@@ -75,11 +75,11 @@ def Teq(Pin,rg):
     
     return Teq
 
-def calcFQ(T,R,D):
-    Qdat=getQdat(R)
+def calcFQ(T,rg,D):
+    Qdat=getQdat(rg)
     #spline does not do a good job of interpolation- use power law for low frequencies
-    Qabsnu=exQabsnu(Qdat,R)
+    Qabsnu=exQabsnu(Qdat,rg)
     def Fnu(nu):
-        Omg = np.pi*(R/D)**2
+        Omg = np.pi*(rg/D)**2
         return Bnu(nu,T)*Omg*Qabsnu(nu)/Jy
     return Fnu

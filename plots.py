@@ -57,11 +57,11 @@ print "Pin BB for 1 mm grain at 130 AU: ", PinBB130AU[3]
 
 ####### 3 ########
 Teq10AU = np.array([dM.Teq(Pin10AU[i],rg[i]) for i in range(4)])
-TeqBB10AU = (280*(Rfom/Rsun)**0.5*(10**-0.5)*(Tfom/5800))
+TeqBB10AU = (280.*(Rfom/Rsun)**0.5*(10.**-0.5)*(Tfom/5800.))
 print Teq10AU
 print TeqBB10AU
 Teq130AU = np.array([dM.Teq(Pin130AU[i],rg[i]) for i in range(4)])
-TeqBB130AU = (280*(Rfom/Rsun)**0.5*(130**-0.5)*(Tfom/5800))
+TeqBB130AU = (280.*(Rfom/Rsun)**0.5*(130.**-0.5)*(Tfom/5800.))
 print Teq130AU
 print TeqBB130AU
 
@@ -124,14 +124,18 @@ print M130AU, " grams of dust at 130AU for 0.1, 1, 10, 1000 um grains."
 Mfom = 1.92*Msun
 Frad10AU = Pin10AU/c
 Frad130AU = Pin130AU/c
+print Frad10AU
+print Frad130AU
+
+Fpr10AU = Pin10AU*np.sqrt(G*Mfom/(10*AU))/c**2
+Fpr130AU = Pin130AU*np.sqrt(G*Mfom/(130*AU))/c**2
+print Fpr10AU
+print Fpr130AU
 
 B10AU = Frad10AU*((10.*AU)**2)/(G*Mfom*2.*(4./3.)*np.pi*(rg*1e-4)**3)
 B130AU = Frad130AU*((130.*AU)**2)/(G*Mfom*2.*(4./3.)*np.pi*(rg*1e-4)**3)
 print B10AU
 print B130AU
-
-Fpr10AU = Pin10AU*np.sqrt(G*Mfom/(10*AU))/c**2
-Fpr130AU = Pin130AU*np.sqrt(G*Mfom/(130*AU))/c**2
 
 T10AU = (4e2/(Mfom/Msun))*(10.**2)/B10AU
 T130AU = (4e2/(Mfom/Msun))*(130.**2)/B130AU

@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import diskModel as dM
 
+#constants
 h = 6.626e-27 #erg s
 c = 2.99792458e10 #cm s^-1
 k = 1.380658e-16 #erg K^-1
@@ -13,8 +14,11 @@ Rsun = 6.9599e10 #cm
 Msun = 1.989e33 #g
 
 ######## 1 ######
+#stellar parameters
 Tfom = 8590
 Rfom = 1.842*Rsun
+
+#calculate flux density and plot
 Fnu10AU=dM.calcF(Tfom,Rfom,10.*AU)
 l = 10**np.linspace(-5,1,1000)
 nu=c/l
@@ -31,7 +35,9 @@ plt.savefig("FomFnu.pdf")
 plt.clf()
 
 ######## 2 ########
-rg = np.array([0.1,1.,10.,1000.])
+rg = np.array([0.1,1.,10.,1000.]) #grain size in um
+#calculate Pin for each grain at each orbit and print
+#Pin should be less than the ideal black-body so print that too as a sanity check
 Pin10AU = np.array([dM.Pin(Fnu10AU,i) for i in rg])
 PinBB10AU = np.array([(np.pi*(Rfom**2)*sigsb*(Tfom**4)*((i*1e-4)/(10.*AU))**2) for i in rg])
 Pin130AU = np.array([dM.Pin(Fnu130AU,i) for i in rg])
@@ -56,6 +62,8 @@ print "Pin for 1 mm grain at 130 AU: ", Pin130AU[3]
 print "Pin BB for 1 mm grain at 130 AU: ", PinBB130AU[3]
 
 ####### 3 ########
+#calculate true and bb equilibrium temperature
+#true should be hotter than bb as not a perfect emitter
 Teq10AU = np.array([dM.Teq(Pin10AU[i],rg[i]) for i in range(4)])
 TeqBB10AU = (280.*(Rfom/Rsun)**0.5*(10.**-0.5)*(Tfom/5800.))
 print Teq10AU
@@ -65,7 +73,8 @@ TeqBB130AU = (280.*(Rfom/Rsun)**0.5*(130.**-0.5)*(Tfom/5800.))
 print Teq130AU
 print TeqBB130AU
 
-D=7.7*3.0857e18
+#calculate observed flux density and plot
+D=7.7*3.0857e18 #distance
 
 Fnu10AUp1 = dM.calcFQ(Teq10AU[0],rg[0],D)
 Fnu10AU1 = dM.calcFQ(Teq10AU[1],rg[1],D)
@@ -100,9 +109,11 @@ plt.ylim(-50,-15)
 plt.xlim(9,15)
 plt.legend(loc=8)
 plt.savefig('Fnu130Au.pdf')
+plt.clf()
 
 
 ########## Part 4 #######
+#find peak of spectrum and find ratio (number of grains)
 FpeakFom = np.array([6e2,1e4])*(1e-3)
 Fpeak10AU = np.array([np.max(Fnu10AUp1(nu)),np.max(Fnu10AU1(nu)),np.max(Fnu10AU10(nu)),np.max(Fnu10AU1mm(nu))])
 Fpeak130AU = np.array([np.max(Fnu130AUp1(nu)),np.max(Fnu130AU1(nu)),np.max(Fnu130AU10(nu)),np.max(Fnu130AU1mm(nu))])
@@ -113,6 +124,7 @@ N130AU = FpeakFom[1]/Fpeak130AU
 print N10AU, " grains are needed at 10AU for 0.1, 1, 10, 1000 um grains."
 print N130AU, " grains are needed at 130AU for 0.1, 1, 10, 1000 um grains."
 
+#multiply by density * volume to get mass
 M10AU = N10AU * 2. * (4./3.)*np.pi*(rg*1e-4)**3
 M130AU = N130AU * 2. * (4./3.)*np.pi*(rg*1e-4)**3
 
@@ -121,28 +133,27 @@ print M130AU, " grams of dust at 130AU for 0.1, 1, 10, 1000 um grains."
 
 
 ######### Part 5 ##########
+#calculate force of radiation pressure
 Mfom = 1.92*Msun
 Frad10AU = Pin10AU/c
 Frad130AU = Pin130AU/c
 print Frad10AU
 print Frad130AU
 
+#calculate Poynting Robertson drag force
 Fpr10AU = Pin10AU*np.sqrt(G*Mfom/(10*AU))/c**2
 Fpr130AU = Pin130AU*np.sqrt(G*Mfom/(130*AU))/c**2
 print Fpr10AU
 print Fpr130AU
 
+#calculate beta
 B10AU = Frad10AU*((10.*AU)**2)/(G*Mfom*2.*(4./3.)*np.pi*(rg*1e-4)**3)
 B130AU = Frad130AU*((130.*AU)**2)/(G*Mfom*2.*(4./3.)*np.pi*(rg*1e-4)**3)
 print B10AU
 print B130AU
 
+#calculate lifetime
 T10AU = (4e2/(Mfom/Msun))*(10.**2)/B10AU
 T130AU = (4e2/(Mfom/Msun))*(130.**2)/B130AU
 print T10AU
 print T130AU
-
-#Bpr10AU = Fpr10AU*((10.*AU)**2)/(G*Mfom*2.*(4./3.)*np.pi*(rg*1e-4)**3)
-#Bpr130AU = Fpr130AU*((130.*AU)**2)/(G*Mfom*2.*(4./3.)*np.pi*(rg*1e-4)**3)
-#print Bpr10AU
-#print Bpr130AU

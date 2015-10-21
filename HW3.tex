@@ -29,14 +29,12 @@ The method \texttt{calcF} in \texttt{diskModel} returns the flux density, $F_\nu
 \end{figure}
 
 \section{Part 2}
-The method \texttt{Pin} in \texttt{diskModel} returns the total power absorbed by a grain of radius $r_g$ [$\mu$m] and in a radiation field with flux density $F_\nu$. It first imports the $Q$ data obtained from the ``Smoothed UV Astronomical Silicate" models found at \url{http://www.astro.princeton.edu/~draine/dust/dust.diel.html} and extrapolates $Q_\mathrm{abs}$ to longer wavelengths with a $1/\lambda^2$ power-law. It then integrates, using the trapezoid rule the integral in Equation \ref{eq:Pin} from $\lambda=1$ cm -- 1 nm, where $r_g$ is now in cgs units.
+The method \texttt{Pin} in \texttt{diskModel} returns the total power absorbed by a grain of radius $r_g$ [$\mu$m] and in a radiation field with flux density $F_\nu$. It first imports the $Q$ data obtained from the ``Smoothed UV Astronomical Silicate" models found at \url{http://www.astro.princeton.edu/~draine/dust/dust.diel.html} and extrapolates $Q_\mathrm{abs}$ to longer wavelengths with a $1/\lambda^2$ power-law. It then numerically integrates, using the trapezoid rule, Equation \ref{eq:Pin} from $\lambda=1$ cm -- 1 nm, where $r_g$ is now in cgs units. $P_\mathrm{in}$ for different grain sizes, $r_g$ for different orbital radii $D_p$ are given in Table \ref{tab:Pin}.
 
 \begin{equation}
 P_\mathrm{in}=\pi r_g^2 \int Q_\mathrm{abs,\nu} F_\nu d\nu
 \label{eq:Pin}
 \end{equation}
-
-$P_\mathrm{in}$ for different grain sizes, $r_g$ for different orbital radii $D_p$ are given in Table \ref{tab:Pin}.
 
 \begin{table}[h]
 \begin{center}
@@ -59,14 +57,14 @@ $P_\mathrm{in}$ for different grain sizes, $r_g$ for different orbital radii $D_
 \end{table}
 
 \section{Part 3}
-The method \texttt{Teq} in \texttt{diskModel} returns the equilibrium temperature of a grain of radius $r_g$ [$\mu$m] and incident power $P_\mathrm{in}$. Similar to \texttt{Pin}, it first imports the $Q$ data and extrapolates $Q_\mathrm{abs}$ to longer wavelengths with a $1/\lambda^2$ power-law. It then finds $T$ such that Equation \ref{eq:Teq}, where $B_\nu$ is the Planck function, is satisfied, using \texttt{scipy.optimize.root}. Again the integration uses the trapezoid rule. 
+The method \texttt{Teq} in \texttt{diskModel} returns the equilibrium temperature of a grain of radius $r_g$ [$\mu$m] and incident power $P_\mathrm{in}$. Similar to \texttt{Pin}, it first imports the $Q$ data and extrapolates $Q_\mathrm{abs}$ to longer wavelengths with a $1/\lambda^2$ power-law. It then finds $T$ such that Equation \ref{eq:Teq}, where $B_\nu$ is the Planck function, is satisfied, using \texttt{scipy.optimize.root}. Again the integration uses the trapezoid rule. The luminosity of each grain is then simply equal to the input power given in Table \ref{tab:Pin}.
 
 \begin{equation}
 P_\mathrm{in}-4\pi^2 r_g^2 \int_{\lambda=1~\mathrm{cm}}^{\lambda=1~\mathrm{nm}} Q_\mathrm{abs,\nu} B_\nu(T) d\nu =0
 \label{eq:Teq}
 \end{equation}
 
-The method \texttt{calcFQ} in \texttt{diskModel} returns the flux density, $F_\nu$ of a grain with temperature $T$, radius $r_g$, at a distance (from the observer) of D. Figures \ref{fig:Fnu10AU} and \ref{fig:Fnu130AU} show the flux density of a given set of grains at orbital radii of 10 and 130 AU, respectively, around Fomalhaut at a distance of 7.7 pc \cite{Fom}. The general trends of the flux densities make sense: smaller grains are fainter, as they have less surface area, but are hotter, as they are less like black-bodies. Based on the peak of the spectrum and slope of the long wavelength emission, the qualitative best fit grain size for the 10 and 130 AU belt is 1 mm and 10 $\mu$m, respectively.
+The method \texttt{calcFQ} in \texttt{diskModel} returns the flux density, $F_\nu$ of a grain with temperature $T$, radius $r_g$, at a distance (from the observer) of D. Figures \ref{fig:Fnu10AU} and \ref{fig:Fnu130AU} show the flux density of a given set of grains at orbital radii of 10 and 130 AU, respectively, around Fomalhaut at a distance of 7.7 pc \citep{Fom}. The general trends of the flux densities make sense: smaller grains are fainter, as they have less surface area, but are hotter, as they are less like black-bodies.
 
 %\subsection{}
 
@@ -87,7 +85,7 @@ The method \texttt{calcFQ} in \texttt{diskModel} returns the flux density, $F_\n
 \end{figure}
 
 \section{Part 4}
-An SED of Fomalhaut from \citet{SED} is shown in Figure \ref{fig:SED}. By scaling the peak flux density of the SED of a single grain up to the full SED, we can estimate the number of grains in the disk. If we then assume a density of 2 g cm$^{-3}$ we can also calculate a rough disk mass. These values are given in Table \ref{tab:mass} 
+An SED of Fomalhaut from \citet{SED} is shown in Figure \ref{fig:SED}. By scaling the peak flux density of the SED of a single grain up to the full SED, we can estimate the number of grains in the disk. If we then assume a density of 2 g cm$^{-3}$ we can also calculate a rough disk mass. These values are given in Table \ref{tab:mass}. Based on the peak of the spectrum and slope of the long wavelength emission, the qualitative best fit grain size for the 10 and 130 AU belt is 1 mm and 10 $\mu$m, respectively.
 
 \begin{figure}[htbp]
 \begin{center}
